@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SaaS Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI';
+            background: #0f172a;
+            color: white;
+        }
+
+        .header {
+            padding: 20px;
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 30px;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .card h3 {
+            margin: 0 0 10px;
+        }
+
+        .chat-btn {
+            display: block;
+            margin: 30px auto;
+            background: #3b82f6;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .chat-btn:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">📊 SaaS Customer Support Dashboard</div>
+
+<div class="container">
+    <div class="card">
+        <h3>🔐 Login Issues</h3>
+        <p>Reset password, login errors, account access.</p>
+    </div>
+
+    <div class="card">
+        <h3>💳 Subscription</h3>
+        <p>Upgrade plans, billing, payments.</p>
+    </div>
+
+    <div class="card">
+        <h3>📊 Dashboard</h3>
+        <p>Loading issues, missing data, errors.</p>
+    </div>
+
+    <div class="card">
+        <h3>⚙️ Settings</h3>
+        <p>Profile updates, preferences, integrations.</p>
+    </div>
+</div>
+
+<button class="chat-btn" onclick="openChat()">
+    💬 Open Support Chat
+</button>
+
+<script>
+function openChat() {
+    window.location.href = "/chatbot";
+}
+</script>
+
+</body>
+</html>

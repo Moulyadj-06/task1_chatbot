@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SaaS Support Assistant</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+        }
+
+        .chat-wrapper {
+            width: 420px;
+            height: 550px;
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: relative; /* IMPORTANT */
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 15px;
+            top: 12px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .chat-box {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            padding: 10px 14px;
+            margin: 8px 0;
+            border-radius: 12px;
+            max-width: 75%;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .user {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            align-self: flex-end;
+            color: white;
+        }
+
+        .bot {
+            background: rgba(255,255,255,0.15);
+            align-self: flex-start;
+        }
+
+        .input-area {
+            display: flex;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 10px;
+        }
+
+        input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+        }
+
+        button {
+            margin-left: 10px;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .typing {
+            font-style: italic;
+            opacity: 0.7;
+            font-size: 13px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="chat-wrapper">
+
+    <!-- ✅ FIXED HEADER -->
+    <div class="chat-header">
+        <button class="back-btn" onclick="goBack()">⬅ Back</button>
+        💬 SaaS Support Assistant
+    </div>
+
+    <div class="chat-box" id="chatBox"></div>
+
+    <div class="input-area">
+        <input type="text" id="userInput" placeholder="Ask about login, plans, dashboard..." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+</div>
+
+<script>
+
+function goBack() {
+    window.location.href = "/";
+}
+
+function sendMessage() {
+    let input = document.getElementById("userInput");
+    let message = input.value;
+
+    if (message.trim() === "") return;
+
+    let chatBox = document.getElementById("chatBox");
+
+    // User message
+    let userMsg = document.createElement("div");
+    userMsg.className = "message user";
+    userMsg.innerText = message;
+    chatBox.appendChild(userMsg);
+
+    // Typing indicator
+    let typing = document.createElement("div");
+    typing.className = "message bot typing";
+    typing.innerText = "Typing...";
+    chatBox.appendChild(typing);
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    fetch("/chat", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({message: message})
+    })
+    .then(res => res.json())
+    .then(data => {
+        chatBox.removeChild(typing);
+
+        let botMsg = document.createElement("div");
+        botMsg.className = "message bot";
+        botMsg.innerText = data.reply;
+        chatBox.appendChild(botMsg);
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+    })
+    .catch(err => {
+        chatBox.removeChild(typing);
+
+        let errorMsg = document.createElement("div");
+        errorMsg.className = "message bot";
+        errorMsg.innerText = "⚠️ Server error";
+        chatBox.appendChild(errorMsg);
+    });
+
+    input.value = "";
+}
+
+</script>
+
+</body>
+</html>
