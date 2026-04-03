@@ -9,10 +9,8 @@ app = Flask(__name__)
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
-
 # Store chat history
 chat_history = []
-
 
 # 🖥️ Dashboard Page
 @app.route("/")
