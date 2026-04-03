@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template
-from groq import Groq
+#from groq import Groq
 import os
 from dotenv import load_dotenv
 
@@ -7,7 +7,7 @@ load_dotenv()
 
 app = Flask(__name__)
 
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+client = Gemini(api_key=os.getenv("gemini_API_KEY"))
 
 
 # Store chat history
